@@ -64,6 +64,10 @@ virtualenv venv
 ```
 source /venv/bin/activate
 ```
+- Install all the dependencies
+```
+pip install -r requirements.txt
+```
 - Apply all the migrations
 ```
 python manage.py migrate
