@@ -53,3 +53,22 @@ Dendencies that will be installed once the project is started
 |sqlparse|0.3.1|
 |zipp|3.1.0|
 
+## Alternative Install
+### General
+I left a `requirements.txt` file in the project if you want to use a conventional installation using `vevnv`.
+- Create a new virtual environment
+```
+virtualenv venv
+```
+- Activate the environment
+```
+source /venv/bin/activate
+```
+- Apply all the migrations
+```
+python manage.py migrate
+```
+- Run the development server
+```
+python manage.py runserver
+```
