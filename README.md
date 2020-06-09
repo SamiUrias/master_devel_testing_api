@@ -11,7 +11,7 @@ git clone https://github.com/SamiUrias/master_devel_testing_api.git
 run using pipenv.
 - Postgresql (DBMS):  I choose postgres for this project, despite the fact that django can handle multiple databases I
 strongly suggest to use postgres to smoothly follow this readme.
-
+- Optional: I am in Ubuntu 18.04 ( for reference )
 
 ## Setup
 - Install all the dependencies in your virtual environment.
@@ -67,6 +67,10 @@ source /venv/bin/activate
 - Install all the dependencies
 ```
 pip install -r requirements.txt
+```
+**To Install psycopg2 you are going to need the python development packages**
+```
+sudo apt-get install libpq-dev python-dev
 ```
 - Create a new postgres database
 - Modify the `/api/settings.py` in the database section with your database configuration
