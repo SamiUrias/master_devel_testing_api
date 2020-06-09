@@ -68,6 +68,9 @@ source /venv/bin/activate
 ```
 pip install -r requirements.txt
 ```
+- Create a new postgres database
+- Modify the `/api/settings.py` in the database section with your database configuration
+
 - Apply all the migrations
 ```
 python manage.py migrate
