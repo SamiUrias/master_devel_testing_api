@@ -1,9 +1,9 @@
-from django.shortcuts import get_object_or_404
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from .models import Credentials, Messages
+from .serializers import MessagesSerializer
 from .utilities.authentication import authenticate as custom_auth
 
 
@@ -29,7 +29,6 @@ class Credential(APIView):
 
 
 class Message(APIView):
-
     def post(self, request):
         # Authentication
         if not custom_auth(self.request.META, request.data):
@@ -54,11 +53,19 @@ class Message(APIView):
         if not custom_auth(self.request.META, request.data):
             return Response({}, status=status.HTTP_403_FORBIDDEN)
 
-        print("fid: ", id)
-        print(request.data)
-        message = get_object_or_404(Messages, pk=id)
-        print(message.msg)
-        return Response(
-            {"id": message.id, "msg": message.msg, "tag": message.tag},
-            status=status.HTTP_200_OK
-        )
+        messages = Messages.objects.filter(pk=id)
+        serializer = MessagesSerializer(messages, many=True)
+        return Response({"messages": serializer.data},
+                        status=status.HTTP_200_OK)
+
+
+class MessagesWithTag(APIView):
+    def get(self, request, tag=None):
+        if tag is None:
+            return Response({}, status=status.HTTP_400_BAD_REQUEST)
+
+
+        messages = Messages.objects.filter(tag=tag)
+        serializer = MessagesSerializer(messages, many=True)
+        return Response({"messages": serializer.data},
+                        status=status.HTTP_200_OK)
