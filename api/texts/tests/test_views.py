@@ -99,3 +99,61 @@ class Message(APITestCase):
         )
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+    def test_read_message_with_invalid_authentication(self):
+        url = "/api/message/1/"
+        http_x_key = "NOT VALID"
+        http_x_route = "/message/"
+        http_x_signature = "578c990edf8572b98bfd1bf86bd236bb477837e9b2d188771973cf8fd798dd8c"
+        headers = {
+            "HTTP_X_KEY": http_x_key,
+            "HTTP_X_SIGNATURE": http_x_signature,
+            "HTTP_X_ROUTE": http_x_route
+        }
+
+        response = self.client.get(
+            url,
+            content_type='application/json',
+            **headers
+        )
+
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+
+
+    def test_read_messages_by_tag_with_valid_authentication(self):
+        url = "/api/messages/test/"
+        http_x_key = "key"
+        http_x_route = "/message/"
+        http_x_signature = "578c990edf8572b98bfd1bf86bd236bb477837e9b2d188771973cf8fd798dd8c"
+        headers = {
+            "HTTP_X_KEY": http_x_key,
+            "HTTP_X_SIGNATURE": http_x_signature,
+            "HTTP_X_ROUTE": http_x_route
+        }
+
+        response = self.client.get(
+            url,
+            content_type='application/json',
+            **headers
+        )
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+    def test_read_messages_by_tag_with_invalid_authentication(self):
+        url = "/api/messages/test/"
+        http_x_key = "NOT VALID"
+        http_x_route = "/message/"
+        http_x_signature = "578c990edf8572b98bfd1bf86bd236bb477837e9b2d188771973cf8fd798dd8c"
+        headers = {
+            "HTTP_X_KEY": http_x_key,
+            "HTTP_X_SIGNATURE": http_x_signature,
+            "HTTP_X_ROUTE": http_x_route
+        }
+
+        response = self.client.get(
+            url,
+            content_type='application/json',
+            **headers
+        )
+
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
