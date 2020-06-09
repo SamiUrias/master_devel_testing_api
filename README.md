@@ -5,7 +5,7 @@ This project implements a custom api with a custom authentication method.
 ### Basic programs you need for the commands to work
 - Any shape or form to download this repository into you desired folder
 ```
-git clone https://github.com/SamiUrias/master_devel_testing_api
+git clone https://github.com/SamiUrias/master_devel_testing_api.git
 ```
 - Pipenv: I use pipenv to create and manage  my virtualenv, then  I am going to explain how to make this project
 run using pipenv.
