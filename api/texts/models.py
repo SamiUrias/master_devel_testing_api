@@ -12,4 +12,4 @@ class Credentials(models.Model):
 
 class Messages(models.Model):
     tag = models.TextField()
-    message = models.TextField()
+    msg = models.TextField()
