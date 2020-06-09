@@ -38,20 +38,30 @@ def authenticate(request_meta, request_data):
 
     # Validate X-key
     # The x-key should exists in the database
+    if http_x_signature is None:
+        return False
+
     if not Credentials.objects.filter(key=http_x_key).exists():
         return False
 
     # Validate x-route
     # The x-route must exist and should contain a string representing the
     # route for the request
-    if http_x_route is None or http_x_route not in X_ROUTE_REPRESENTATIONS:
+    if http_x_route is None:
+        return False
+
+    if http_x_route not in X_ROUTE_REPRESENTATIONS:
         return False
 
     # Validate x-signature
-    if http_x_signature is None or not is_valid_x_signature(http_x_signature,
-                                                            http_x_route,
-                                                            http_x_key,
-                                                            request_data):
+    if http_x_signature is None:
+        return False
+
+    if not is_valid_x_signature(http_x_signature,
+                                http_x_route,
+                                http_x_key,
+                                request_data):
+
         print("=> Not valid signature")
         return False
     else:

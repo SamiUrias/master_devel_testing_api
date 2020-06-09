@@ -1,6 +1,6 @@
 from rest_framework.test import APITestCase
 from rest_framework import status
-from .models import Credentials
+from ..models import Credentials
 
 
 # Create your tests here.
