@@ -50,6 +50,9 @@ class Message(APIView):
         if id is None:
             return Response({}, status=status.HTTP_400_BAD_REQUEST)
 
+        # Authentication
+        if not custom_auth(self.request.META, request.data):
+            return Response({}, status=status.HTTP_403_FORBIDDEN)
 
         print("fid: ", id)
         print(request.data)
