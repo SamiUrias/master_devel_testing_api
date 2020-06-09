@@ -3,7 +3,7 @@ import json
 from rest_framework import status
 from rest_framework.test import APITestCase
 
-from ..models import Credentials
+from ..models import Credentials, Messages
 
 
 # Create your tests here.
@@ -36,6 +36,7 @@ class ExistingCredentialTest(APITestCase):
 class Message(APITestCase):
     def setUp(self):
         Credentials.objects.create(key="key", shared_secret="ss")
+        Messages.objects.create(msg="test message 01", tag="tag")
 
     def test_create_with_valid_authentication(self):
         url = "/api/message/"
@@ -44,7 +45,7 @@ class Message(APITestCase):
         http_x_route = "/message/"
         http_x_signature = "8cb2f197587ed8366a4da71bb9f5f96357d448589e7c3cff4d67c86eea531bac"
 
-        headers={
+        headers = {
             "HTTP_X_KEY": http_x_key,
             "HTTP_X_SIGNATURE": http_x_signature,
             "HTTP_X_ROUTE": http_x_route
@@ -65,7 +66,7 @@ class Message(APITestCase):
         http_x_key = "NOT VALID"
         http_x_route = "/message/"
         http_x_signature = "8cb2f197587ed8366a4da71bb9f5f96357d448589e7c3cff4d67c86eea531bac"
-        headers={
+        headers = {
             "HTTP_X_KEY": http_x_key,
             "HTTP_X_SIGNATURE": http_x_signature,
             "HTTP_X_ROUTE": http_x_route
@@ -79,3 +80,22 @@ class Message(APITestCase):
         )
 
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+
+    def test_read_message_with_valid_authentication(self):
+        url = "/api/message/1/"
+        http_x_key = "key"
+        http_x_route = "/message/"
+        http_x_signature = "578c990edf8572b98bfd1bf86bd236bb477837e9b2d188771973cf8fd798dd8c"
+        headers = {
+            "HTTP_X_KEY": http_x_key,
+            "HTTP_X_SIGNATURE": http_x_signature,
+            "HTTP_X_ROUTE": http_x_route
+        }
+
+        response = self.client.get(
+            url,
+            content_type='application/json',
+            **headers
+        )
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
